@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pip Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('BACK1.jpg');
+      background-size: cover;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Pip Calculator</h2>
+    <label for="currencyPair">Currency Pair:</label>
+    <input type="text" id="currencyPair" placeholder="e.g., EUR/USD">
+    <label for="entryPrice">Entry Price:</label>
+    <input type="text" id="entryPrice" placeholder="e.g., 1.2345">
+    <label for="stopLoss">Stop Loss:</label>
+    <input type="text" id="stopLoss" placeholder="e.g., 1.2300">
+    <label for="takeProfit">Take Profit:</label>
+    <input type="text" id="takeProfit" placeholder="e.g., 1.2400">
+    <label for="positionSize">Position Size (Lots):</label>
+    <input type="text" id="positionSize" placeholder="e.g., 0.1">
+    <label for="entryType">Type of Entry:</label>
+    <select id="entryType">
+      <option value="long">Long</option>
+      <option value="short">Short</option>
+    </select>
+    <button onclick="calculatePips()">Calculate</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculatePips() {
+      var entryPrice = parseFloat(document.getElementById("entryPrice").value);
+      var stopLoss = parseFloat(document.getElementById("stopLoss").value);
+      var takeProfit = parseFloat(document.getElementById("takeProfit").value);
+      var positionSize = parseFloat(document.getElementById("positionSize").value);
+      var entryType = document.getElementById("entryType").value;
+
+      var pips, takeProfitPips, stopLossPips;
+      if (entryType === "long") {
+        pips = (takeProfit - entryPrice) * 10000;
+        takeProfitPips = Math.abs(takeProfit - entryPrice) * 10000;
+        stopLossPips = Math.abs(stopLoss - entryPrice) * 10000;
+      } else {
+        pips = (entryPrice - takeProfit) * 10000;
+        takeProfitPips = Math.abs(entryPrice - takeProfit) * 10000;
+        stopLossPips = Math.abs(entryPrice - stopLoss) * 10000;
+      }
+
+      var pipValue = pips * positionSize;
+
+      var resultElement = document.getElementById("result");
+      resultElement.innerHTML = "<strong>Results:</strong><br>Pips: " + pips.toFixed(2) + "<br>Pip Value: $" + pipValue.toFixed(2) + "<br>Take Profit Pips: " + takeProfitPips.toFixed(2) + "<br>Stop Loss Pips: " + stopLossPips.toFixed(2);
+    }
+  </script>
+</body>
+</html>
